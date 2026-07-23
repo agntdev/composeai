@@ -14,13 +14,18 @@ describe("buildBot handler loader", () => {
     expect(suite.passed).toBeGreaterThan(0);
   });
 
-  it("unknown input falls through to the global fallback", async () => {
+  it("natural chat handles free-form text instead of the old generic fallback", async () => {
     const suite = await runSpecs(() => buildBot("test-token"), [
       parseBotSpec({
-        name: "unknown text hits the fallback",
+        name: "free-form question is answered",
         steps: [
-          { send: { text: "qwerty" },
-            expect: [{ method: "sendMessage", payload: { text: "Sorry, I didn't understand that. Try /help." } }] },
+          {
+            send: { text: "What is water made of?" },
+            expect: [
+              { method: "sendMessage", payload: { text: "Thinking…" } },
+              { method: "sendMessage" },
+            ],
+          },
         ],
       }),
     ]);

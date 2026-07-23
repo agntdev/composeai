@@ -1,13 +1,10 @@
 import { Composer } from "grammy";
 import { createBot, type BotContext, type CreateBotOptions } from "./toolkit/index.js";
 import type { StorageAdapter } from "grammy";
+import type { Session as FlowSession } from "./lib/session.js";
 
-// The per-chat session shape (ephemeral conversation state only). Extend as the
-// bot grows. Durable domain data must NOT live here — use the toolkit's
-// persistent storage (see AGENTS.md).
-export interface Session {
-  // example: step?: "awaiting_amount";
-}
+// Ephemeral conversation state only. Durable domain data uses src/lib/store.ts.
+export type Session = FlowSession;
 
 export type Ctx = BotContext<Session>;
 
@@ -66,7 +63,7 @@ export async function buildBot(token: string, opts: BuildBotOptions = {}) {
  * import graph at upload and rejects any static node:* import, even one whose
  * code never runs.
  */
-async function loadHandlersFromDisk(): Promise<Composer<Ctx>[] > {
+async function loadHandlersFromDisk(): Promise<Composer<Ctx>[]> {
   const { readdirSync } = await import("node:fs");
   const dir = new URL("./handlers/", import.meta.url);
   let files: string[] = [];

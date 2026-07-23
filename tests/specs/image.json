@@ -1,19 +1,59 @@
 [
   {
-    "name": "/image",
+    "name": "/image without args prompts for a description",
     "steps": [
       {
+        "send": { "text": "/image" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Generate an image from a prompt"
+              "text": "Describe the image you want — subject, style, mood. I'll generate it and send it here."
             }
           }
-        ],
-        "send": {
-          "text": "/image"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/image with prompt sends a photo attachment",
+    "steps": [
+      {
+        "send": { "text": "/image a calm blue lake at sunrise" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Generating your image…" }
+          },
+          { "method": "sendPhoto" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Image menu button then prompt delivers photo",
+    "steps": [
+      {
+        "send": { "callback": "image:start" },
+        "expect": [
+          { "method": "answerCallbackQuery" },
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Describe the image you want — subject, style, mood. I'll generate it and send it here."
+            }
+          }
+        ]
+      },
+      {
+        "send": { "text": "a red bicycle against a brick wall" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Generating your image…" }
+          },
+          { "method": "sendPhoto" }
+        ]
       }
     ]
   }

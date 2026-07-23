@@ -1,19 +1,85 @@
 [
   {
-    "name": "/summary",
+    "name": "/summary without args prompts for text",
     "steps": [
       {
+        "send": { "text": "/summary" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Generate a summary of a message or text"
+              "text": "Paste the text you want summarized (or forward a long message's content)."
             }
           }
-        ],
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/summary with text asks for length then delivers",
+    "steps": [
+      {
         "send": {
-          "text": "/summary"
-        }
+          "text": "/summary The team shipped three features this week. Users liked the new onboarding. Next week we will fix bugs and improve performance across the board."
+        },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "How long should the summary be?" }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "summary:len:short" },
+        "expect": [
+          { "method": "answerCallbackQuery" },
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Summarizing…" }
+          },
+          { "method": "sendMessage" },
+          { "method": "sendDocument" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Summary menu button then text then medium length",
+    "steps": [
+      {
+        "send": { "callback": "summary:start" },
+        "expect": [
+          { "method": "answerCallbackQuery" },
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Paste the text you want summarized (or forward a long message's content)."
+            }
+          }
+        ]
+      },
+      {
+        "send": {
+          "text": "Climate change is raising sea levels. Cities near coasts face flooding risks. Adaptation plans include seawalls and managed retreat. Communities need funding and clear timelines."
+        },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "How long should the summary be?" }
+          }
+        ]
+      },
+      {
+        "send": { "callback": "summary:len:medium" },
+        "expect": [
+          { "method": "answerCallbackQuery" },
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Summarizing…" }
+          },
+          { "method": "sendMessage" },
+          { "method": "sendDocument" }
+        ]
       }
     ]
   }

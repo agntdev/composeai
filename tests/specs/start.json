@@ -7,7 +7,26 @@
         "expect": [
           {
             "method": "sendMessage",
-            "payload": { "text": "👋 Welcome! Tap a button below to get started." }
+            "payload": {
+              "text": "Hi — I'm ComposeAI.\n\nAsk a question, generate an image, draft a document, export a PDF, or get a summary. Tap a button below, or just type what you need."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "back to menu button re-renders welcome",
+    "steps": [
+      {
+        "send": { "callback": "menu:main" },
+        "expect": [
+          { "method": "answerCallbackQuery" },
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Hi — I'm ComposeAI.\n\nAsk a question, generate an image, draft a document, export a PDF, or get a summary. Tap a button below, or just type what you need."
+            }
           }
         ]
       }
