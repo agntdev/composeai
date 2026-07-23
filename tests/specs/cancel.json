@@ -1,0 +1,50 @@
+[
+  {
+    "name": "/cancel resets the flow",
+    "steps": [
+      {
+        "send": { "text": "/ask" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "What's your question? Type it below — I'll answer right here in chat."
+            }
+          }
+        ]
+      },
+      {
+        "send": { "text": "/cancel" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Cancelled — tap a button below when you're ready."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Cancel button clears the flow",
+    "steps": [
+      {
+        "send": { "callback": "ask:start" },
+        "expect": [{ "method": "answerCallbackQuery" }, { "method": "editMessageText" }]
+      },
+      {
+        "send": { "callback": "flow:cancel" },
+        "expect": [
+          { "method": "answerCallbackQuery" },
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Cancelled — tap a button below when you're ready."
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

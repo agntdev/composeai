@@ -1,19 +1,59 @@
 [
   {
-    "name": "/doc",
+    "name": "/doc without args prompts for a brief",
     "steps": [
       {
+        "send": { "text": "/doc" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Create a text document"
+              "text": "What should the document cover? Send a short brief — topic, audience, and any must-include points."
             }
           }
-        ],
-        "send": {
-          "text": "/doc"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/doc with brief sends a document attachment",
+    "steps": [
+      {
+        "send": { "text": "/doc Project kickoff notes for a mobile app" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Drafting your document…" }
+          },
+          { "method": "sendDocument" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Document menu button then brief delivers file",
+    "steps": [
+      {
+        "send": { "callback": "doc:start" },
+        "expect": [
+          { "method": "answerCallbackQuery" },
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "What should the document cover? Send a short brief — topic, audience, and any must-include points."
+            }
+          }
+        ]
+      },
+      {
+        "send": { "text": "Weekly status report for the design team" },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Drafting your document…" }
+          },
+          { "method": "sendDocument" }
+        ]
       }
     ]
   }

@@ -1,19 +1,59 @@
 [
   {
-    "name": "/pdf",
+    "name": "/pdf without prior doc prompts for text",
     "steps": [
       {
+        "send": { "text": "/pdf" },
         "expect": [
           {
             "method": "sendMessage",
             "payload": {
-              "text": "Export a document as PDF"
+              "text": "Send the text to export as PDF, or a document id from an earlier file. If you already made a document, I can also export that."
             }
           }
-        ],
-        "send": {
-          "text": "/pdf"
-        }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "/pdf with text sends a PDF document",
+    "steps": [
+      {
+        "send": { "text": "/pdf Hello world. This is a short PDF body for export." },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Building your PDF…" }
+          },
+          { "method": "sendDocument" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "PDF menu button with no prior doc prompts",
+    "steps": [
+      {
+        "send": { "callback": "pdf:start" },
+        "expect": [
+          { "method": "answerCallbackQuery" },
+          {
+            "method": "editMessageText",
+            "payload": {
+              "text": "Send the text to export as PDF, or a document id from an earlier file. If you already made a document, I can also export that."
+            }
+          }
+        ]
+      },
+      {
+        "send": { "text": "Quarterly goals: ship the assistant bot and collect feedback." },
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": { "text": "Building your PDF…" }
+          },
+          { "method": "sendDocument" }
+        ]
       }
     ]
   }
