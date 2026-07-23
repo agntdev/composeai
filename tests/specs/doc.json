@@ -1,0 +1,20 @@
+[
+  {
+    "name": "/doc",
+    "steps": [
+      {
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Create a text document"
+            }
+          }
+        ],
+        "send": {
+          "text": "/doc"
+        }
+      }
+    ]
+  }
+]
